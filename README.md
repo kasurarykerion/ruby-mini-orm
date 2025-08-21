@@ -1,24 +1,15 @@
-# ruby-mini-orm
-Tiny ActiveRecord-style ORM for SQLite. Dynamic attributes + .all, .find, .where, .save, .delete. Zero magic, ultra-light, Ruby.
+# mini_orm
 
-A minimal, human-sized ORM for Ruby:
+Tiny ActiveRecord-style ORM for SQLite.
 
-Dynamic attribute methods inferred from table columns
-Simple API: .all, .find(id), .where(...), #save, #delete
-SQLite backend via sqlite3
-No Rails required, no heavy abstractions
-Features
+## Quickstart
 
-Dynamic attributes from PRAGMA table_info
-Table name inferred from class name (User -> users)
-Insert/update via #save, delete via #delete
-Where supports Hash or SQL fragment with params
-Quickstart
+```ruby
+# install: bundle install
+# run example: ruby examples/usage.rb
+```
 
-Ruby 3.0+
-gem install sqlite3
-ruby examples/usage.rb
-Usage
+## Usage
 
 ```ruby
 require "mini_orm"
@@ -27,6 +18,7 @@ MiniORM.connect("dev.sqlite3")
 
 class User < MiniORM::Base; end
 
+# create table once (for demo)
 MiniORM.connection.execute <<~SQL
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,22 +30,17 @@ SQL
 u = User.new(name: "Ada", email: "ada@example.com")
 u.save
 
-User.all
-User.find(u.id)
-User.where(name: "Ada")
+puts User.all.map { |x| [x.id, x.name] }.inspect
+puts User.find(u.id).email
+puts User.where(name: "Ada").size
 
 u.name = "Ada Lovelace"
 u.save
 
 u.delete
-Why
-
-Learnable in minutes
-Great for scripts, prototypes, and teaching metaprogramming
-Stays close to SQLite, avoids complex DSLs
-Roadmap
-
-Type adapters (date/time/boolean)
-Basic validations
-Associations (has_many/belongs_to)
 ```
+
+## Notes
+- SQLite backend via `sqlite3` gem
+- Dynamic attribute methods from table columns
+- API: `.all`, `.find(id)`, `.where(...)`, `#save`, `#delete`

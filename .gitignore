@@ -1,0 +1,7 @@
+/.bundle/
+/pkg/
+/coverage/
+/doc/
+/tmp/
+Gemfile.lock
+*.sqlite3
